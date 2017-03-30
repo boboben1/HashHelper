@@ -42,4 +42,4 @@ MAKE_TUPLE_HASHABLE(int, int, int)
 ```
 
 # TODO
-Boost compatibility?
+Optimizations
