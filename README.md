@@ -9,10 +9,12 @@ Makes something hashable easily
 
 
 MAKE_HASHABLE(MAKE_TEMPLATE(std::pair, int, int), first, second)
+	//or
+MAKE_PAIR_HASHABLE(int, int)
 MAKE_TUPLE_HASHABLE(int, int, int)
 
 hash_value(obj) // GET HASH VALUE
-
+hash_combine(hash, obj) //ADD ONTO THE HASH
 ```
 
 # Example
@@ -38,3 +40,6 @@ int main()
 MAKE_HASHABLE(MAKE_TEMPLATE(std::pair, int, int), first, second)
 MAKE_TUPLE_HASHABLE(int, int, int)
 ```
+
+# TODO
+Boost compatibility?
