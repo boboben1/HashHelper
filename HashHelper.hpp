@@ -55,23 +55,27 @@ For more information, please refer to <http://unlicense.org>
 
 
 template<typename T>
-std::size_t hash_value(const T& value)
+std::size_t __hash_value(const T& value)
 {
 	static std::hash<T> hasher;
 	return hasher(value);
 }
 
 
-inline void hash_combine(std::size_t& seed) { }
+inline void __hash_combine(std::size_t& seed) { }
 
 template <typename T>
-inline void hash_combine(std::size_t& seed, const T& v) {
-	seed ^= hash_value(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+inline void __hash_combine(std::size_t& seed, const T& v) {
+	seed ^= __hash_value(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
+#ifndef BOOST_VERSION
+#define hash_combine __hash_combine
+#define hash_value __hash_value
+#endif
 
 #define _DOT(t, val) t.val
-#define _HASH_COMBINE(val) hash_combine(ret, _DOT(t,val));
+#define _HASH_COMBINE(val) __hash_combine(ret, _DOT(t,val));
 
 #define MAKE_HASHABLE(type, ...) \
 	namespace std \
@@ -88,7 +92,7 @@ inline void hash_combine(std::size_t& seed, const T& v) {
 #define MAKE_TEMPLATE(type, ...) \
 	type<__VA_ARGS__>
 
-#define _HASH_TUPLE_COMBINE(val) hash_combine(ret, ##val);
+#define _HASH_TUPLE_COMBINE(val) __hash_combine(ret, ##val);
 
 #define MAKE_TUPLE_HASHABLE_(type, ...) \
 	namespace std \
@@ -96,9 +100,9 @@ inline void hash_combine(std::size_t& seed, const T& v) {
 		template<> struct hash< type > {\
 			std::size_t operator()(const type & t) {\
 				std::size_t ret = 0; \
-				hash_combine(ret,std::get<0>(t));\
-				hash_combine(ret,std::get<1>(t));\
-				hash_combine(ret,std::get<2>(t));\
+				__hash_combine(ret,std::get<0>(t));\
+				__hash_combine(ret,std::get<1>(t));\
+				__hash_combine(ret,std::get<2>(t));\
 				return ret;\
 			}\
 		};\
