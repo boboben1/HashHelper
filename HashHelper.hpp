@@ -104,7 +104,9 @@ inline void hash_combine(std::size_t& seed, const T& v) {
 		};\
 	}
 
-#define MAKE_TUPLE_HASHABLE(t1, t2, t3) MAKE_TUPLE_HASHABLE_(MAKE_TEMPLATE(std::tuple, t1,t2,t3))
-
+#define MAKE_TUPLE_HASHABLE(t1, t2, t3) \
+    MAKE_TUPLE_HASHABLE_(MAKE_TEMPLATE(std::tuple, t1,t2,t3))
+#define MAKE_PAIR_HASHABLE(t1, t2) \
+    MAKE_HASHABLE(MAKE_TEMPLATE(std::pair, t1, t2), first, second)
 
 #endif // !_HASHHEPER_H
