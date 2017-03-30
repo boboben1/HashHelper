@@ -70,23 +70,23 @@ inline void hash_combine(std::size_t& seed, const T& v) {
 }
 
 
-
-#define _HASH_COMBINE(val) hash_combine(ret, t.##val);
+#define _DOT(t, val) t.val
+#define _HASH_COMBINE(val) hash_combine(ret, _DOT(t,val));
 
 #define MAKE_HASHABLE(type, ...) \
 	namespace std \
 	{\
 		template<> struct hash< type > {\
-			std::size_t operator()(const type & t) {\
+			std::size_t operator()(const type & t) const {\
 				std::size_t ret = 0; \
-				MAP(_HASH_COMBINE, ##__VA_ARGS__) \
+				MAP(_HASH_COMBINE, __VA_ARGS__) \
 				return ret;\
 			}\
 		};\
 	}
 
 #define MAKE_TEMPLATE(type, ...) \
-	type ## < ## __VA_ARGS__ ## >
+	type<__VA_ARGS__>
 
 #define _HASH_TUPLE_COMBINE(val) hash_combine(ret, ##val);
 
